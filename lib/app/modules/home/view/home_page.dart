@@ -6,6 +6,7 @@ import 'package:my_workout/app/modules/home/view_models/today_workout.dart';
 import 'package:my_workout/app/utils/app_drawer.dart';
 
 class HomePage extends StatefulWidget {
+  static const String route = '/';
   final String title;
   const HomePage({Key? key, this.title = "Home"}) : super(key: key);
 
@@ -14,7 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
-  static const route = '/';
   final HomeStore _homeStore = HomeStore();
 
   @override

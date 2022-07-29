@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_workout/app/modules/workout/view_models/workout_screen_custom_clipper.dart';
+import 'package:my_workout/app/modules/workout_management/view/workoutManagement_page.dart';
 import 'package:my_workout/app/utils/app_drawer.dart';
 
 class WorkoutPage extends StatelessWidget {
-  static const route = '/treinos';
+  static const String route = '/workout';
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Treinos'),
+        actions: [
+          IconButton(
+            onPressed: () => Modular.to.pushNamed(WorkoutManagementPage.route),
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
       drawer: AppDrawer(),
       extendBodyBehindAppBar: true,

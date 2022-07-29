@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_workout/app/modules/home/view/home_page.dart';
 import 'package:my_workout/app/modules/workout/view/workout_page.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -16,7 +17,7 @@ class AppDrawer extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               title: const Text('Home'),
-              onTap: () => Modular.to.pushReplacementNamed('/'),
+              onTap: () => Modular.to.pushReplacementNamed(HomePage.route),
             ),
             ListTile(
               leading: Icon(
