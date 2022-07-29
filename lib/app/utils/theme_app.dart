@@ -20,6 +20,7 @@ class ThemeApp {
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
+          subtitle1: TextStyle(color: Colors.white),
           subtitle2: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -36,6 +37,18 @@ class ThemeApp {
         //     primary: Color.fromARGB(255, 243, 219, 4),
         //   ),
         // ),
+        inputDecorationTheme: const InputDecorationTheme(
+          fillColor: Color.fromRGBO(48, 56, 62, 0.9),
+          filled: true,
+          border: InputBorder.none,
+          labelStyle: TextStyle(
+            color: Color.fromRGBO(151, 152, 152, 1),
+          ),
+        ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: Color.fromARGB(255, 243, 219, 4),
+          selectionHandleColor: Color.fromARGB(255, 243, 219, 4),
+        ),
         cardColor: const Color.fromRGBO(60, 70, 72, 0.9),
         scaffoldBackgroundColor: const Color.fromRGBO(29, 34, 37, 0.9),
       );
