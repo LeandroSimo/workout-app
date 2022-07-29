@@ -37,10 +37,41 @@ class WorkoutPage extends StatelessWidget {
                       clipper: WorkoutScreenCustomCilipper(),
                       child: const Image(
                         image: NetworkImage(
-                            'https://images.unsplash.com/photo-1584827386894-fc939dad6078?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nzd8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60'),
+                            'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHJ1bm5pbmd8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60'),
                         height: 150,
                         fit: BoxFit.cover,
                       ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Corrida',
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        Text(
+                          'Sábado',
+                          style: Theme.of(context).textTheme.subtitle2,
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(
+                                  color: Color.fromARGB(255, 243, 219, 4),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text('Exercícios'),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   )
                 ],
