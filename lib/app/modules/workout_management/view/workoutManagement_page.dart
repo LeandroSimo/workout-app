@@ -35,6 +35,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
             builder: (_) => Padding(
               padding: const EdgeInsets.all(15),
               child: Form(
+                key: _store.formKey,
                 child: ListView(
                   children: [
                     TextFormField(
@@ -53,9 +54,10 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                           .requestFocus(_store.dropDownFocus),
                       decoration:
                           const InputDecoration(labelText: 'Imagem URL'),
-                      validator: (value) => value!.isEmpty || value.length < 3
-                          ? 'O nome deve conter no mínimo 3 caracteres'
-                          : null,
+                      validator: (value) => value!.startsWith('https://') ||
+                              value.startsWith('http://')
+                          ? null
+                          : 'O endereço de imagem deve começar com HTTPS:// ou HTTP://',
                     ),
                     const SizedBox(
                       height: 1,
@@ -65,6 +67,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                         color: Theme.of(context).inputDecorationTheme.fillColor,
                         padding: const EdgeInsets.all(15),
                         child: DropdownButton(
+                          value: _store.dropValue,
                           focusNode: _store.dropDownFocus,
                           items: _store.dropDownOptions
                               .map(
@@ -74,7 +77,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                                 ),
                               )
                               .toList(),
-                          onChanged: (_) {},
+                          onChanged: _store.setDropValue,
                           hint: Text(
                             'Dia da Semana',
                             style: TextStyle(
@@ -96,6 +99,27 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        _store.dropValid ? '' : 'Selecione um dia da semana',
+                        style: TextStyle(color: Theme.of(context).errorColor),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _store.save,
+                        child: Text(
+                          'Salvar',
+                          style: TextStyle(
+                            fontSize:
+                                Theme.of(context).textTheme.headline6?.fontSize,
+                            color: const Color.fromARGB(255, 51, 48, 48),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
