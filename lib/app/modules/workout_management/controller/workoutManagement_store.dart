@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 
 part 'workoutManagement_store.g.dart';
@@ -6,6 +7,11 @@ class WorkoutManagementStore = _WorkoutManagementStoreBase
     with _$WorkoutManagementStore;
 
 abstract class _WorkoutManagementStoreBase with Store {
+  @observable
+  var imageFocus = FocusNode();
+  @observable
+  var dropDownFocus = FocusNode();
+
   final arguments = ObservableMap<String, Object>.of({'title': 'Novo Treino'});
   final dropDownOptions = ObservableList<Map<String, Object>>.of(
     [

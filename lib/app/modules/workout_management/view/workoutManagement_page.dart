@@ -12,14 +12,14 @@ class WorkoutManagementPage extends StatefulWidget {
 }
 
 class WorkoutManagementPageState extends State<WorkoutManagementPage> {
-  final WorkoutManagementStore store = WorkoutManagementStore();
+  final WorkoutManagementStore _store = WorkoutManagementStore();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Observer(
-              builder: (_) => Text(store.arguments['title'].toString()))),
+              builder: (_) => Text(_store.arguments['title'].toString()))),
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
@@ -38,11 +38,24 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                 child: ListView(
                   children: [
                     TextFormField(
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) => FocusScope.of(context)
+                          .requestFocus(_store.imageFocus),
                       decoration: const InputDecoration(labelText: 'Nome'),
+                      validator: (value) => value!.isEmpty || value.length < 3
+                          ? 'O nome deve conter no mínimo 3 caracteres'
+                          : null,
                     ),
                     TextFormField(
+                      focusNode: _store.imageFocus,
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_) => FocusScope.of(context)
+                          .requestFocus(_store.dropDownFocus),
                       decoration:
                           const InputDecoration(labelText: 'Imagem URL'),
+                      validator: (value) => value!.isEmpty || value.length < 3
+                          ? 'O nome deve conter no mínimo 3 caracteres'
+                          : null,
                     ),
                     const SizedBox(
                       height: 1,
@@ -52,7 +65,8 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                         color: Theme.of(context).inputDecorationTheme.fillColor,
                         padding: const EdgeInsets.all(15),
                         child: DropdownButton(
-                          items: store.dropDownOptions
+                          focusNode: _store.dropDownFocus,
+                          items: _store.dropDownOptions
                               .map(
                                 (e) => DropdownMenuItem(
                                   child: Text(e['name'].toString()),
