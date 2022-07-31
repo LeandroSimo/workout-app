@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_workout/app/modules/exercise/view/exercise_page.dart';
 import 'package:my_workout/app/modules/workout/view_models/workout_screen_custom_clipper.dart';
 import 'package:my_workout/app/modules/workout_management/view/workoutManagement_page.dart';
 import 'package:my_workout/app/utils/app_drawer.dart';
@@ -74,7 +75,8 @@ class WorkoutPage extends StatelessWidget {
                                   color: Color.fromARGB(255, 243, 219, 4),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () =>
+                                  Modular.to.pushNamed(ExercisePage.route),
                               child: const Text('Exercícios'),
                             ),
                           ),
