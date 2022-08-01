@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_workout/app/modules/exercise_management/view/exerciseManagement_page.dart';
 
 class ExercisePage extends StatelessWidget {
   static const String route = '/exercise';
@@ -13,7 +15,7 @@ class ExercisePage extends StatelessWidget {
         title: const Text('Exercicios cadastrados'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Modular.to.pushNamed(ExerciseManagementPage.route),
             icon: const Icon(Icons.add),
           )
         ],

@@ -1,6 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_workout/app/modules/exercise/exercise_module.dart';
 import 'package:my_workout/app/modules/exercise/view/exercise_page.dart';
+import 'package:my_workout/app/modules/exercise_management/exerciseManagement_module.dart';
+import 'package:my_workout/app/modules/exercise_management/view/exerciseManagement_page.dart';
 import 'package:my_workout/app/modules/home/view/home_page.dart';
 import 'package:my_workout/app/modules/workout/view/workout_page.dart';
 import 'package:my_workout/app/modules/workout/workout_module.dart';
@@ -19,5 +21,7 @@ class AppModule extends Module {
     ModuleRoute(WorkoutPage.route, module: WorkoutModule()),
     ModuleRoute(WorkoutManagementPage.route, module: WorkoutManagementModule()),
     ModuleRoute(ExercisePage.route, module: ExerciseModule()),
+    ModuleRoute(ExerciseManagementPage.route,
+        module: ExerciseManagementModule()),
   ];
 }
