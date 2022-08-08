@@ -72,8 +72,8 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                           items: _store.dropDownOptions
                               .map(
                                 (e) => DropdownMenuItem(
-                                  child: Text(e['name'].toString()),
                                   value: e['id'],
+                                  child: Text(e['name'].toString()),
                                 ),
                               )
                               .toList(),
