@@ -9,6 +9,22 @@ part of 'workoutManagement_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
+  late final _$workoutAtom =
+      Atom(name: '_WorkoutManagementStoreBase.workout', context: context);
+
+  @override
+  Workout get workout {
+    _$workoutAtom.reportRead();
+    return super.workout;
+  }
+
+  @override
+  set workout(Workout value) {
+    _$workoutAtom.reportWrite(value, super.workout, () {
+      super.workout = value;
+    });
+  }
+
   late final _$imageFocusAtom =
       Atom(name: '_WorkoutManagementStoreBase.imageFocus', context: context);
 
@@ -115,6 +131,39 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
   }
 
   @override
+  void setName(String value) {
+    final _$actionInfo = _$_WorkoutManagementStoreBaseActionController
+        .startAction(name: '_WorkoutManagementStoreBase.setName');
+    try {
+      return super.setName(value);
+    } finally {
+      _$_WorkoutManagementStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setImageUrl(String value) {
+    final _$actionInfo = _$_WorkoutManagementStoreBaseActionController
+        .startAction(name: '_WorkoutManagementStoreBase.setImageUrl');
+    try {
+      return super.setImageUrl(value);
+    } finally {
+      _$_WorkoutManagementStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setWeekDay(int value) {
+    final _$actionInfo = _$_WorkoutManagementStoreBaseActionController
+        .startAction(name: '_WorkoutManagementStoreBase.setWeekDay');
+    try {
+      return super.setWeekDay(value);
+    } finally {
+      _$_WorkoutManagementStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void save() {
     final _$actionInfo = _$_WorkoutManagementStoreBaseActionController
         .startAction(name: '_WorkoutManagementStoreBase.save');
@@ -128,6 +177,7 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
   @override
   String toString() {
     return '''
+workout: ${workout},
 imageFocus: ${imageFocus},
 dropDownFocus: ${dropDownFocus},
 dropValid: ${dropValid},

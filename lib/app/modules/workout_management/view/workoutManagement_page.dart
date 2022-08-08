@@ -1,4 +1,7 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
+import 'package:my_workout/app/modules/workout/view/workout_page.dart';
 import 'package:my_workout/app/modules/workout_management/controller/workoutManagement_store.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +16,7 @@ class WorkoutManagementPage extends StatefulWidget {
 
 class WorkoutManagementPageState extends State<WorkoutManagementPage> {
   final WorkoutManagementStore _store = WorkoutManagementStore();
+  final WorkoutStore workoutStore = WorkoutStore();
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,9 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                 child: ListView(
                   children: [
                     TextFormField(
+                      // onChanged: _store.setName,
+                      onSaved: (value) => _store.setName,
+                      initialValue: _store.workout.name,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
                           .requestFocus(_store.imageFocus),
@@ -48,6 +55,8 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                           : null,
                     ),
                     TextFormField(
+                      // onChanged: _store.setImageUrl,
+                      onSaved: (value) => _store.setImageUrl,
                       focusNode: _store.imageFocus,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -81,10 +90,9 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                           hint: Text(
                             'Dia da Semana',
                             style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .subtitle2
-                                    ?.color),
+                              color:
+                                  Theme.of(context).textTheme.subtitle2?.color,
+                            ),
                           ),
                           icon: const Icon(Icons.calendar_today),
                           isExpanded: true,
@@ -109,7 +117,13 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                     SizedBox(
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _store.save,
+                        onPressed: () {
+                          _store.save();
+                          // workoutStore.addWorkout(_store.workout);
+                          // Modular.to.pushNamed(WorkoutPage.route);
+                          print(
+                              '${_store.workout.name}\n${_store.workout.imageUrl}\n${_store.workout.weekDay}');
+                        },
                         child: Text(
                           'Salvar',
                           style: TextStyle(

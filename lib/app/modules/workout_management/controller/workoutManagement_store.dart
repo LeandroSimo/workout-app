@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:my_workout/app/modules/workout/model/workout.dart';
 
 part 'workoutManagement_store.g.dart';
 
@@ -7,6 +8,8 @@ class WorkoutManagementStore = _WorkoutManagementStoreBase
     with _$WorkoutManagementStore;
 
 abstract class _WorkoutManagementStoreBase with Store {
+  @observable
+  var workout = Workout();
   @observable
   var imageFocus = FocusNode();
   @observable
@@ -34,6 +37,12 @@ abstract class _WorkoutManagementStoreBase with Store {
   void setDropValue(value) => dropValue = value;
   @action
   bool setDropValid(value) => dropValid = value;
+  @action
+  void setName(String value) => workout.name = value;
+  @action
+  void setImageUrl(String value) => workout.imageUrl = value;
+  @action
+  void setWeekDay(int value) => workout.weekDay = value;
 
   @action
   void save() {
@@ -42,8 +51,12 @@ abstract class _WorkoutManagementStoreBase with Store {
         : setDropValid(false);
 
     bool? valid = formKey.currentState?.validate();
-    valid! && dropValid
-        ? print('Fomulário Válido')
-        : print('Formulario Inválido');
+
+    if (valid! && dropValid) {
+      formKey.currentState?.save();
+      setWeekDay(dropValue!);
+    } else {
+      print('Formulário Inválido');
+    }
   }
 }
