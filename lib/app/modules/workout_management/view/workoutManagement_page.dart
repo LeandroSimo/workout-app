@@ -43,8 +43,8 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                 child: ListView(
                   children: [
                     TextFormField(
-                      // onChanged: _store.setName,
-                      onSaved: (value) => _store.setName,
+                      onChanged: _store.setName,
+                      // onSaved: (value) => _store.setName,
                       initialValue: _store.workout.name,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -55,8 +55,8 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                           : null,
                     ),
                     TextFormField(
-                      // onChanged: _store.setImageUrl,
-                      onSaved: (value) => _store.setImageUrl,
+                      onChanged: _store.setImageUrl,
+                      // onSaved: (value) => _store.setImageUrl,
                       focusNode: _store.imageFocus,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -118,9 +118,11 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
+                          workoutStore.addWorkout(_store.workout);
                           _store.save();
-                          // workoutStore.addWorkout(_store.workout);
                           // Modular.to.pushNamed(WorkoutPage.route);
+                          print(workoutStore.workouts.toString());
+                          print('-------------------');
                           print(
                               '${_store.workout.name}\n${_store.workout.imageUrl}\n${_store.workout.weekDay}');
                         },

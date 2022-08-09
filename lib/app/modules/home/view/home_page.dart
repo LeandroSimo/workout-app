@@ -25,32 +25,30 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Observer(
-        builder: (_) => Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('lib/assets/images/bg3.jpg'),
-                    fit: BoxFit.cover),
-              ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('lib/assets/images/bg3.jpg'),
+                  fit: BoxFit.cover),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 75),
-              child: Column(
-                children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: ButtonBar(
-                      children: _homeStore.getButtonBar(() {}),
-                    ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 75),
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: ButtonBar(
+                    children: _homeStore.getButtonBar(() {}),
                   ),
-                  TodayWorkout(),
-                ],
-              ),
+                ),
+                TodayWorkout(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
