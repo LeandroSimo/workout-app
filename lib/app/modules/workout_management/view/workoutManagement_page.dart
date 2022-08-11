@@ -1,7 +1,4 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
-import 'package:my_workout/app/modules/workout/view/workout_page.dart';
 import 'package:my_workout/app/modules/workout_management/controller/workoutManagement_store.dart';
 import 'package:flutter/material.dart';
 
@@ -15,15 +12,15 @@ class WorkoutManagementPage extends StatefulWidget {
 }
 
 class WorkoutManagementPageState extends State<WorkoutManagementPage> {
-  final WorkoutManagementStore _store = WorkoutManagementStore();
-  final WorkoutStore workoutStore = WorkoutStore();
+  final WorkoutManagementStore _workoutManagement = WorkoutManagementStore();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Observer(
-              builder: (_) => Text(_store.arguments['title'].toString()))),
+              builder: (_) =>
+                  Text(_workoutManagement.arguments['title'].toString()))),
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
@@ -39,28 +36,30 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
             builder: (_) => Padding(
               padding: const EdgeInsets.all(15),
               child: Form(
-                key: _store.formKey,
+                key: _workoutManagement.formKey,
                 child: ListView(
                   children: [
                     TextFormField(
-                      onChanged: _store.setName,
-                      // onSaved: (value) => _store.setName,
-                      initialValue: _store.workout.name,
+                      onChanged: _workoutManagement.setName,
+                      onSaved: (value) =>
+                          _workoutManagement.workout.name = value,
+                      initialValue: _workoutManagement.workout.name,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
-                          .requestFocus(_store.imageFocus),
+                          .requestFocus(_workoutManagement.imageFocus),
                       decoration: const InputDecoration(labelText: 'Nome'),
                       validator: (value) => value!.isEmpty || value.length < 3
                           ? 'O nome deve conter no mínimo 3 caracteres'
                           : null,
                     ),
                     TextFormField(
-                      onChanged: _store.setImageUrl,
-                      // onSaved: (value) => _store.setImageUrl,
-                      focusNode: _store.imageFocus,
+                      onChanged: _workoutManagement.setImageUrl,
+                      onSaved: (value) =>
+                          _workoutManagement.workout.imageUrl = value,
+                      focusNode: _workoutManagement.imageFocus,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
-                          .requestFocus(_store.dropDownFocus),
+                          .requestFocus(_workoutManagement.dropDownFocus),
                       decoration:
                           const InputDecoration(labelText: 'Imagem URL'),
                       validator: (value) => value!.startsWith('https://') ||
@@ -76,9 +75,9 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                         color: Theme.of(context).inputDecorationTheme.fillColor,
                         padding: const EdgeInsets.all(15),
                         child: DropdownButton(
-                          value: _store.dropValue,
-                          focusNode: _store.dropDownFocus,
-                          items: _store.dropDownOptions
+                          value: _workoutManagement.dropValue,
+                          focusNode: _workoutManagement.dropDownFocus,
+                          items: _workoutManagement.dropDownOptions
                               .map(
                                 (e) => DropdownMenuItem(
                                   value: e['id'],
@@ -86,7 +85,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                                 ),
                               )
                               .toList(),
-                          onChanged: _store.setDropValue,
+                          onChanged: _workoutManagement.setDropValue,
                           hint: Text(
                             'Dia da Semana',
                             style: TextStyle(
@@ -110,22 +109,16 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        _store.dropValid ? '' : 'Selecione um dia da semana',
+                        _workoutManagement.dropValid
+                            ? ''
+                            : 'Selecione um dia da semana',
                         style: TextStyle(color: Theme.of(context).errorColor),
                       ),
                     ),
                     SizedBox(
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {
-                          workoutStore.addWorkout(_store.workout);
-                          _store.save();
-                          // Modular.to.pushNamed(WorkoutPage.route);
-                          print(workoutStore.workouts.toString());
-                          print('-------------------');
-                          print(
-                              '${_store.workout.name}\n${_store.workout.imageUrl}\n${_store.workout.weekDay}');
-                        },
+                        onPressed: _workoutManagement.save,
                         child: Text(
                           'Salvar',
                           style: TextStyle(
@@ -135,7 +128,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

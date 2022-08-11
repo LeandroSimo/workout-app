@@ -16,7 +16,7 @@ abstract class HomeStoreBase with Store {
       _list.add(
         TextButton(
           onPressed: () {},
-          child: Text(dia),
+          child: Text(dia.substring(0, 3).toUpperCase()),
         ),
       );
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_workout/app/modules/exercise/view/exercise_page.dart';
 import 'package:my_workout/app/modules/workout/view_models/workout_screen_custom_clipper.dart';
+import 'package:my_workout/app/utils/dias_semana.dart';
 
 class WorkoutCard extends StatelessWidget {
   final String imageUrl;
@@ -38,7 +39,7 @@ class WorkoutCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline4,
                 ),
                 Text(
-                  weekDay.toString(),
+                  DiasSemana.getWeekdayName(weekDay).toString(),
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
                 SizedBox(

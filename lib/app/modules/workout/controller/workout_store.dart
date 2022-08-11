@@ -1,5 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:my_workout/app/modules/workout/model/workout.dart';
+import 'package:my_workout/app/modules/workout_management/controller/workoutManagement_store.dart';
 
 part 'workout_store.g.dart';
 

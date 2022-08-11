@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
 import 'package:my_workout/app/modules/workout/model/workout.dart';
 
 part 'workoutManagement_store.g.dart';
@@ -8,6 +10,7 @@ class WorkoutManagementStore = _WorkoutManagementStoreBase
     with _$WorkoutManagementStore;
 
 abstract class _WorkoutManagementStoreBase with Store {
+  final _workoutStore = WorkoutStore();
   @observable
   var workout = Workout();
   @observable
@@ -43,6 +46,12 @@ abstract class _WorkoutManagementStoreBase with Store {
   void setImageUrl(String value) => workout.imageUrl = value;
   @action
   void setWeekDay(int value) => workout.weekDay = value;
+  @computed
+  String get getName => workout.name.toString();
+  @computed
+  String get getImgUrl => workout.name.toString();
+  @computed
+  int get getWeekDay => workout.weekDay!.round();
 
   @action
   void save() {
@@ -53,10 +62,11 @@ abstract class _WorkoutManagementStoreBase with Store {
     bool? valid = formKey.currentState?.validate();
 
     if (valid! && dropValid) {
-      formKey.currentState?.save();
       setWeekDay(dropValue!);
-    } else {
-      print('Formulário Inválido');
+      _workoutStore.addWorkout(workout);
+      formKey.currentState?.save();
+      // print(_workoutStore.workouts.toList().toString());
+      // Modular.to.pop();
     }
   }
 }
