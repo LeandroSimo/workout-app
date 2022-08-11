@@ -33,6 +33,22 @@ mixin _$WorkoutStore on _WorkoutStoreBase, Store {
     });
   }
 
+  late final _$addWorkoutAsyncAction =
+      AsyncAction('_WorkoutStoreBase.addWorkout', context: context);
+
+  @override
+  Future<void> addWorkout(Workout workout) {
+    return _$addWorkoutAsyncAction.run(() => super.addWorkout(workout));
+  }
+
+  late final _$updateAsyncAction =
+      AsyncAction('_WorkoutStoreBase.update', context: context);
+
+  @override
+  Future<void> update(Workout workout) {
+    return _$updateAsyncAction.run(() => super.update(workout));
+  }
+
   late final _$_WorkoutStoreBaseActionController =
       ActionController(name: '_WorkoutStoreBase', context: context);
 
@@ -42,17 +58,6 @@ mixin _$WorkoutStore on _WorkoutStoreBase, Store {
         name: '_WorkoutStoreBase.getWorkout');
     try {
       return super.getWorkout();
-    } finally {
-      _$_WorkoutStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void addWorkout(Workout workout) {
-    final _$actionInfo = _$_WorkoutStoreBaseActionController.startAction(
-        name: '_WorkoutStoreBase.addWorkout');
-    try {
-      return super.addWorkout(workout);
     } finally {
       _$_WorkoutStoreBaseActionController.endAction(_$actionInfo);
     }

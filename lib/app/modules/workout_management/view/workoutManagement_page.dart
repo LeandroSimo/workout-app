@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class WorkoutManagementPage extends StatefulWidget {
   static const String route = '/workout-management';
-  const WorkoutManagementPage({
+  WorkoutManagementPage({
     Key? key,
   }) : super(key: key);
   @override
@@ -15,12 +15,18 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
   final WorkoutManagementStore _workoutManagement = WorkoutManagementStore();
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_workoutManagement.isInit) {}
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
     return Scaffold(
       appBar: AppBar(
-          title: Observer(
-              builder: (_) =>
-                  Text(_workoutManagement.arguments['title'].toString()))),
+        title: Text(_arguments['title']),
+      ),
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
@@ -134,6 +140,13 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(top: 300),
+            child: Center(
+                child: Observer(
+                    builder: (_) =>
+                        Text(_workoutManagement.workout.name.toString()))),
+          )
         ],
       ),
     );

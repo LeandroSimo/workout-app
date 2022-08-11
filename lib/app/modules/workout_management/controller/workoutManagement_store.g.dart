@@ -111,6 +111,38 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
     });
   }
 
+  late final _$isCreateAtom =
+      Atom(name: '_WorkoutManagementStoreBase.isCreate', context: context);
+
+  @override
+  bool get isCreate {
+    _$isCreateAtom.reportRead();
+    return super.isCreate;
+  }
+
+  @override
+  set isCreate(bool value) {
+    _$isCreateAtom.reportWrite(value, super.isCreate, () {
+      super.isCreate = value;
+    });
+  }
+
+  late final _$isInitAtom =
+      Atom(name: '_WorkoutManagementStoreBase.isInit', context: context);
+
+  @override
+  bool get isInit {
+    _$isInitAtom.reportRead();
+    return super.isInit;
+  }
+
+  @override
+  set isInit(bool value) {
+    _$isInitAtom.reportWrite(value, super.isInit, () {
+      super.isInit = value;
+    });
+  }
+
   late final _$formKeyAtom =
       Atom(name: '_WorkoutManagementStoreBase.formKey', context: context);
 
@@ -125,6 +157,14 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
     _$formKeyAtom.reportWrite(value, super.formKey, () {
       super.formKey = value;
     });
+  }
+
+  late final _$saveAsyncAction =
+      AsyncAction('_WorkoutManagementStoreBase.save', context: context);
+
+  @override
+  Future<void> save() {
+    return _$saveAsyncAction.run(() => super.save());
   }
 
   late final _$_WorkoutManagementStoreBaseActionController =
@@ -186,17 +226,6 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
   }
 
   @override
-  void save() {
-    final _$actionInfo = _$_WorkoutManagementStoreBaseActionController
-        .startAction(name: '_WorkoutManagementStoreBase.save');
-    try {
-      return super.save();
-    } finally {
-      _$_WorkoutManagementStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
 workout: ${workout},
@@ -204,6 +233,8 @@ imageFocus: ${imageFocus},
 dropDownFocus: ${dropDownFocus},
 dropValid: ${dropValid},
 dropValue: ${dropValue},
+isCreate: ${isCreate},
+isInit: ${isInit},
 formKey: ${formKey},
 getName: ${getName},
 getImgUrl: ${getImgUrl},

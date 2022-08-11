@@ -10,7 +10,8 @@ class WorkoutManagementStore = _WorkoutManagementStoreBase
     with _$WorkoutManagementStore;
 
 abstract class _WorkoutManagementStoreBase with Store {
-  final _workoutStore = WorkoutStore();
+  final _workoutStore = Modular.get<WorkoutStore>();
+
   @observable
   var workout = Workout();
   @observable
@@ -22,9 +23,12 @@ abstract class _WorkoutManagementStoreBase with Store {
   @observable
   int? dropValue;
   @observable
+  bool isCreate = true;
+  @observable
+  bool isInit = true;
+  @observable
   var formKey = GlobalKey<FormState>();
 
-  final arguments = ObservableMap<String, Object>.of({'title': 'Novo Treino'});
   final dropDownOptions = ObservableList<Map<String, Object>>.of(
     [
       {'id': 1, 'name': 'Domingo'},
@@ -36,6 +40,7 @@ abstract class _WorkoutManagementStoreBase with Store {
       {'id': 7, 'name': 'Sábado'},
     ],
   );
+
   @action
   void setDropValue(value) => dropValue = value;
   @action
@@ -54,7 +59,8 @@ abstract class _WorkoutManagementStoreBase with Store {
   int get getWeekDay => workout.weekDay!.round();
 
   @action
-  void save() {
+  Future<void> save() async {
+    isCreate = false;
     dropValue != null && dropValue! > 0
         ? setDropValid(true)
         : setDropValid(false);
@@ -62,10 +68,12 @@ abstract class _WorkoutManagementStoreBase with Store {
     bool? valid = formKey.currentState?.validate();
 
     if (valid! && dropValid) {
-      setWeekDay(dropValue!);
-      _workoutStore.addWorkout(workout);
       formKey.currentState?.save();
-      // print(_workoutStore.workouts.toList().toString());
+      setWeekDay(dropValue!);
+      await _workoutStore.addWorkout(workout);
+      isCreate = true;
+      print(_workoutStore.workouts.length);
+      print(isCreate);
       // Modular.to.pop();
     }
   }
