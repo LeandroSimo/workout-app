@@ -7,9 +7,8 @@ part 'exercise_store.g.dart';
 class ExerciseStore = _ExerciseStoreBase with _$ExerciseStore;
 
 abstract class _ExerciseStoreBase with Store, ChangeNotifier {
-  @observable
-  List<Exercise> exercises = [];
-
+  ObservableList<Exercise> exercises = ObservableList<Exercise>();
+  @action
   Future<List<Exercise>> getExercise(String workoutId) async {
     List<Exercise> filtered = [];
     exercises.forEach(
@@ -22,12 +21,14 @@ abstract class _ExerciseStoreBase with Store, ChangeNotifier {
     return filtered;
   }
 
+  @action
   Future<void> add(Exercise exercise) async {
     exercises.add(exercise);
     notifyListeners();
   }
 
-  Future<void> delete(String id) async {
+  @action
+  Future<void> delete(BuildContext context, String id) async {
     exercises.removeWhere((element) => element.id == id);
     notifyListeners();
   }

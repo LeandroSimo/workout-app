@@ -30,10 +30,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
     disposerCreate = reaction(
       (_) => _workoutManagement.onCreate,
       (onCreate) {
-        if (onCreate == true) {
-          print(_workoutStore.workouts);
-          // Modular.to.pop();
-        }
+        onCreate == true ? Modular.to.pop() : onCreate;
       },
     );
 
@@ -41,7 +38,8 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
       if (isInit == true) {
         final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
         if (_arguments['id'] != null) {
-          _workoutManagement.workout = _workoutStore.getById(_arguments['id']);
+          _workoutManagement.workout.id =
+              _workoutStore.getById(_arguments['id']).toString();
           _workoutManagement.dropValue = _workoutManagement.workout.weekDay;
         }
       }
@@ -99,8 +97,6 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                   children: [
                     TextFormField(
                       onChanged: _workoutManagement.setName,
-                      onSaved: (value) =>
-                          _workoutManagement.workout.name = value,
                       initialValue: _workoutManagement.workout.name,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
@@ -112,8 +108,6 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                     ),
                     TextFormField(
                       onChanged: _workoutManagement.setImageUrl,
-                      onSaved: (value) =>
-                          _workoutManagement.workout.imageUrl = value,
                       focusNode: _workoutManagement.imageFocus,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)

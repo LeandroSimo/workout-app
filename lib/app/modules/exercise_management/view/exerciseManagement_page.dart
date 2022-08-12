@@ -1,24 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
 import 'package:my_workout/app/modules/exercise_management/controller/exerciseManagement_store.dart';
 
 class ExerciseManagementPage extends StatefulWidget {
   static const String route = '/exercise-management';
-  const ExerciseManagementPage({
-    Key? key,
-  }) : super(key: key);
   @override
   ExerciseManagementPageState createState() => ExerciseManagementPageState();
 }
 
 class ExerciseManagementPageState extends State<ExerciseManagementPage> {
-  final ExerciseManagementStore _store = ExerciseManagementStore();
+  final _exerciseManagenment = Modular.get<ExerciseManagementStore>();
+
+  ReactionDisposer? disposerInit;
+  ReactionDisposer? disposerSaved;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    disposerInit = reaction((_) => _exerciseManagenment.isInit, (isInit) {
+      if (isInit == true) {
+        final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
+        _exerciseManagenment.exercise.workoutId = _arguments['workoutId'];
+      }
+      isInit = false;
+    });
+
+    disposerSaved = reaction((_) => _exerciseManagenment.onSaved, (onSaved) {
+      onSaved == true ? Modular.to.pop() : onSaved;
+    });
+  }
+
+  @override
+  void dispose() {
+    disposerInit!();
+    disposerSaved!();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final _arguments = ModalRoute.of(context)?.settings.arguments;
+    final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
     return Scaffold(
       appBar: AppBar(
-        title: Text(_arguments.toString()),
+        title: Text(_arguments['title']),
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -35,20 +62,22 @@ class ExerciseManagementPageState extends State<ExerciseManagementPage> {
             builder: (_) => Padding(
               padding: const EdgeInsets.all(15),
               child: Form(
-                key: _store.formKey,
+                key: _exerciseManagenment.formKey,
                 child: ListView(
                   children: [
                     TextFormField(
+                      onChanged: _exerciseManagenment.setName,
                       decoration: const InputDecoration(labelText: 'Nome'),
                       textInputAction: TextInputAction.next,
                       validator: (value) => value!.length < 3
                           ? 'O neme deve contar pelo menos 3 caracteres'
                           : null,
                       onFieldSubmitted: (_) => FocusScope.of(context)
-                          .requestFocus(_store.imageFocus),
+                          .requestFocus(_exerciseManagenment.imageFocus),
                     ),
                     TextFormField(
-                      focusNode: _store.imageFocus,
+                      onChanged: _exerciseManagenment.setImgUrl,
+                      focusNode: _exerciseManagenment.imageFocus,
                       decoration: const InputDecoration(labelText: 'Imgem URL'),
                       textInputAction: TextInputAction.next,
                       validator: (value) => value!.startsWith('https://') ||
@@ -56,10 +85,11 @@ class ExerciseManagementPageState extends State<ExerciseManagementPage> {
                           ? null
                           : 'O endereço de imagem deve começar com HTTPS:// ou HTTP://',
                       onFieldSubmitted: (_) => FocusScope.of(context)
-                          .requestFocus(_store.descriptionFocus),
+                          .requestFocus(_exerciseManagenment.descriptionFocus),
                     ),
                     TextFormField(
-                      focusNode: _store.descriptionFocus,
+                      onChanged: _exerciseManagenment.setDescription,
+                      focusNode: _exerciseManagenment.descriptionFocus,
                       maxLength: 200,
                       minLines: 3,
                       maxLines: 5,
@@ -82,7 +112,7 @@ class ExerciseManagementPageState extends State<ExerciseManagementPage> {
                     SizedBox(
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _store.save,
+                        onPressed: _exerciseManagenment.save,
                         child: Text(
                           'Salvar',
                           style: TextStyle(

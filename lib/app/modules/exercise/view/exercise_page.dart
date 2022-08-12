@@ -17,7 +17,10 @@ class ExercisePage extends StatelessWidget {
           IconButton(
             onPressed: () => Modular.to.pushNamed(
               ExerciseManagementPage.route,
-              arguments: 'Cadastrar Novo Exercício',
+              arguments: {
+                'title': 'Cadastrar Novo Exercício',
+                'workoutId': _arguments['workoutId']
+              },
             ),
             icon: const Icon(Icons.add),
           )
@@ -43,6 +46,7 @@ class ExercisePage extends StatelessWidget {
                       itemBuilder: (_, index) {
                         var _exercise = _exerciseStore.exercises[index];
                         return ExerciseCard(
+                          _exercise.id.toString(),
                           _exercise.name.toString(),
                           _exercise.description.toString(),
                           _exercise.imageUrl.toString(),
