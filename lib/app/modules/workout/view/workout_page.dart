@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:mobx/mobx.dart';
 import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
 import 'package:my_workout/app/modules/workout/model/workout.dart';
 import 'package:my_workout/app/modules/workout/view_models/workout_card.dart';
@@ -18,7 +16,7 @@ class WorkoutPage extends StatelessWidget {
     final value = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text(value.toString()),
+        title: const Text('Treinos'),
         actions: [
           IconButton(
             onPressed: () => Modular.to.pushNamed(

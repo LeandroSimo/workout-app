@@ -18,14 +18,16 @@ abstract class _WorkoutManagementStoreBase with Store {
   var imageFocus = FocusNode();
   @observable
   var dropDownFocus = FocusNode();
+
   @observable
   bool dropValid = true;
   @observable
   int? dropValue;
   @observable
-  bool isCreate = true;
-  @observable
   bool isInit = true;
+  @observable
+  bool onDelete = true;
+
   @observable
   var formKey = GlobalKey<FormState>();
 
@@ -55,6 +57,7 @@ abstract class _WorkoutManagementStoreBase with Store {
   void setImageUrl(String value) => workout.imageUrl = value;
   @action
   void setWeekDay(int value) => workout.weekDay = value;
+
   @computed
   String get getName => workout.name.toString();
   @computed
@@ -63,8 +66,32 @@ abstract class _WorkoutManagementStoreBase with Store {
   int get getWeekDay => workout.weekDay!.round();
 
   @action
+  void showConfirmationModal(BuildContext context) {
+    onDelete = false;
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Você tem certeza?'),
+        content: const Text('Esta ação não poderá ser desfeita!'),
+        actions: [
+          TextButton(
+            onPressed: () => Modular.to.pop(),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              _workoutStore.delete(workout.id.toString());
+              onDelete = true;
+            },
+            child: const Text('Sim, continuar.'),
+          )
+        ],
+      ),
+    );
+  }
+
+  @action
   Future<void> save() async {
-    isCreate = false;
     dropValue != null && dropValue! > 0
         ? setDropValid(true)
         : setDropValid(false);
@@ -74,11 +101,11 @@ abstract class _WorkoutManagementStoreBase with Store {
     if (valid! && dropValid) {
       formKey.currentState?.save();
       setWeekDay(dropValue!);
-      await _workoutStore.addWorkout(workout);
-      isCreate = true;
-      print(_workoutStore.workouts.length);
-      print(isCreate);
-      // Modular.to.pop();
+      if (workout.id != null) {
+        await _workoutStore.update(workout);
+      } else {
+        await _workoutStore.addWorkout(workout);
+      }
     }
   }
 }

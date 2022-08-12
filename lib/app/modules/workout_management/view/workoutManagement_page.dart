@@ -1,4 +1,8 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:mobx/mobx.dart';
+import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
+import 'package:my_workout/app/modules/workout/view/workout_page.dart';
 import 'package:my_workout/app/modules/workout_management/controller/workoutManagement_store.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +16,38 @@ class WorkoutManagementPage extends StatefulWidget {
 }
 
 class WorkoutManagementPageState extends State<WorkoutManagementPage> {
-  final WorkoutManagementStore _workoutManagement = WorkoutManagementStore();
+  final _workoutManagement = Modular.get<WorkoutManagementStore>();
+  final _workoutStore = Modular.get<WorkoutStore>();
+
+  ReactionDisposer? disposerInit;
+  ReactionDisposer? disposerDelete;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_workoutManagement.isInit) {}
+    disposerInit = reaction((_) => _workoutManagement.isInit, (isInit) {
+      if (isInit == true) {
+        final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
+        if (_arguments['id'] != null) {
+          _workoutManagement.workout = _workoutStore.getById(_arguments['id']);
+          _workoutManagement.dropValue = _workoutManagement.workout.weekDay;
+        }
+      }
+      isInit = false;
+    });
+
+    disposerDelete = reaction((_) => _workoutManagement.onDelete, (onDelete) {
+      onDelete == true
+          ? Modular.to.popAndPushNamed(WorkoutPage.route)
+          : onDelete;
+    });
+  }
+
+  @override
+  void dispose() {
+    disposerInit!();
+    disposerDelete!();
+    super.dispose();
   }
 
   @override
@@ -26,6 +56,15 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_arguments['title']),
+        actions: _workoutManagement.workout.id.toString() != null
+            ? [
+                IconButton(
+                  onPressed: () =>
+                      _workoutManagement.showConfirmationModal(context),
+                  icon: const Icon(Icons.delete),
+                ),
+              ]
+            : [],
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -140,13 +179,6 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 300),
-            child: Center(
-                child: Observer(
-                    builder: (_) =>
-                        Text(_workoutManagement.workout.name.toString()))),
-          )
         ],
       ),
     );

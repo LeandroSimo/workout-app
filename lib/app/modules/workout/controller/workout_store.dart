@@ -11,18 +11,18 @@ class WorkoutStore = _WorkoutStoreBase with _$WorkoutStore;
 abstract class _WorkoutStoreBase with Store, ChangeNotifier {
   @observable
   List<Workout> workouts = [
-    Workout(
-      1.toString(),
-      'Corrida',
-      'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzV8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-      5,
-    ),
-    Workout(
-      2.toString(),
-      'Cárdio',
-      'https://images.unsplash.com/photo-1536922246289-88c42f957773?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-      2,
-    )
+    // Workout(
+    //   1.toString(),
+    //   'Corrida',
+    //   'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzV8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+    //   5,
+    // ),
+    // Workout(
+    //   2.toString(),
+    //   'Cárdio',
+    //   'https://images.unsplash.com/photo-1536922246289-88c42f957773?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDV8fHdvcmtvdXR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+    //   2,
+    // )
   ];
 
   @computed
@@ -30,14 +30,19 @@ abstract class _WorkoutStoreBase with Store, ChangeNotifier {
 
   @action
   Future<void> addWorkout(Workout workout) async {
-    workout.id = Random().toString();
+    workout.id = Random().nextInt(100).toString();
     workouts.add(workout);
     notifyListeners();
   }
 
   @action
   Future<List<Workout>> getWorkout() {
-    return Future.delayed(const Duration(seconds: 1), () => workouts);
+    return Future.delayed(const Duration(seconds: 1), () => getWork);
+  }
+
+  @action
+  Workout getById(String id) {
+    return workouts.firstWhere((element) => element.id == id);
   }
 
   @action
@@ -55,5 +60,9 @@ abstract class _WorkoutStoreBase with Store, ChangeNotifier {
       }
     }).toList();
     notifyListeners();
+  }
+
+  Future<void> delete(String id) async {
+    workouts.removeWhere((element) => element.id == id);
   }
 }

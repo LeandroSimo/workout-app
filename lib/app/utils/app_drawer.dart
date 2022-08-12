@@ -25,8 +25,7 @@ class AppDrawer extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               title: const Text('Treinos'),
-              onTap: () =>
-                  Modular.to.pushNamed(WorkoutPage.route, arguments: 'Treinos'),
+              onTap: () => Modular.to.pushNamed(WorkoutPage.route),
             ),
           ],
         ),

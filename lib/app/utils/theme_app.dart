@@ -49,6 +49,7 @@ class ThemeApp {
           cursorColor: Color.fromARGB(255, 243, 219, 4),
           selectionHandleColor: Color.fromARGB(255, 243, 219, 4),
         ),
+        dialogBackgroundColor: const Color.fromRGBO(29, 24, 37, 1),
         cardColor: const Color.fromRGBO(60, 70, 72, 0.9),
         scaffoldBackgroundColor: const Color.fromRGBO(29, 34, 37, 0.9),
       );

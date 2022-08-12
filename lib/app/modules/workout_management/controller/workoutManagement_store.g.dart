@@ -111,22 +111,6 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
     });
   }
 
-  late final _$isCreateAtom =
-      Atom(name: '_WorkoutManagementStoreBase.isCreate', context: context);
-
-  @override
-  bool get isCreate {
-    _$isCreateAtom.reportRead();
-    return super.isCreate;
-  }
-
-  @override
-  set isCreate(bool value) {
-    _$isCreateAtom.reportWrite(value, super.isCreate, () {
-      super.isCreate = value;
-    });
-  }
-
   late final _$isInitAtom =
       Atom(name: '_WorkoutManagementStoreBase.isInit', context: context);
 
@@ -140,6 +124,22 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
   set isInit(bool value) {
     _$isInitAtom.reportWrite(value, super.isInit, () {
       super.isInit = value;
+    });
+  }
+
+  late final _$onDeleteAtom =
+      Atom(name: '_WorkoutManagementStoreBase.onDelete', context: context);
+
+  @override
+  bool get onDelete {
+    _$onDeleteAtom.reportRead();
+    return super.onDelete;
+  }
+
+  @override
+  set onDelete(bool value) {
+    _$onDeleteAtom.reportWrite(value, super.onDelete, () {
+      super.onDelete = value;
     });
   }
 
@@ -226,6 +226,17 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
   }
 
   @override
+  void showConfirmationModal(BuildContext context) {
+    final _$actionInfo = _$_WorkoutManagementStoreBaseActionController
+        .startAction(name: '_WorkoutManagementStoreBase.showConfirmationModal');
+    try {
+      return super.showConfirmationModal(context);
+    } finally {
+      _$_WorkoutManagementStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 workout: ${workout},
@@ -233,8 +244,8 @@ imageFocus: ${imageFocus},
 dropDownFocus: ${dropDownFocus},
 dropValid: ${dropValid},
 dropValue: ${dropValue},
-isCreate: ${isCreate},
 isInit: ${isInit},
+onDelete: ${onDelete},
 formKey: ${formKey},
 getName: ${getName},
 getImgUrl: ${getImgUrl},

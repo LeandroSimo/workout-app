@@ -64,6 +64,17 @@ mixin _$WorkoutStore on _WorkoutStoreBase, Store {
   }
 
   @override
+  Workout getById(String id) {
+    final _$actionInfo = _$_WorkoutStoreBaseActionController.startAction(
+        name: '_WorkoutStoreBase.getById');
+    try {
+      return super.getById(id);
+    } finally {
+      _$_WorkoutStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 workouts: ${workouts},

@@ -15,7 +15,10 @@ class WorkoutCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     return GestureDetector(
-      onTap: () => Modular.to.pushNamed(WorkoutManagementPage.route, arguments: {'title': 'Editar $name', 'id': id}),
+      onTap: () {
+        Modular.to.pushNamed(WorkoutManagementPage.route,
+            arguments: {'title': 'Editar $name', 'id': id});
+      },
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
@@ -56,8 +59,9 @@ class WorkoutCard extends StatelessWidget {
                             color: Color.fromARGB(255, 243, 219, 4),
                           ),
                         ),
-                        onPressed: () =>
-                            Modular.to.pushNamed(ExercisePage.route, arguments: 'Exercicios Cadastrados'),
+                        onPressed: () => Modular.to.pushNamed(
+                            ExercisePage.route,
+                            arguments: 'Exercicios Cadastrados'),
                         child: const Text('Exercícios'),
                       ),
                     ),
