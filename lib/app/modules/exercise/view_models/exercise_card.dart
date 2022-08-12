@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 
 class ExerciseCard extends StatelessWidget {
-  const ExerciseCard({
-    Key? key,
-  }) : super(key: key);
+  final String name;
+  final String description;
+  final String imageUrl;
 
+  ExerciseCard(this.name, this.description, this.imageUrl);
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: const Text(
-          '40 minutos de corrida',
-          style: TextStyle(
+        title: Text(
+          name,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
           ),
         ),
         subtitle: Text(
-          'Velocidade constante de corrida por 40 minutos',
+          description,
           style: TextStyle(
             color: Theme.of(context).textTheme.subtitle2?.color,
           ),
         ),
         leading: Image.network(
-          'https://img.icons8.com/bubbles/2x/timer.png',
+          imageUrl,
           height: 50,
           width: 50,
           fit: BoxFit.cover,

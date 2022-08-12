@@ -60,8 +60,9 @@ class WorkoutCard extends StatelessWidget {
                           ),
                         ),
                         onPressed: () => Modular.to.pushNamed(
-                            ExercisePage.route,
-                            arguments: 'Exercicios Cadastrados'),
+                          ExercisePage.route,
+                          arguments: {'workoutId': id},
+                        ),
                         child: const Text('Exercícios'),
                       ),
                     ),
