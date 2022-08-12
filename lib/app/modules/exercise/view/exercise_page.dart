@@ -10,12 +10,16 @@ class ExercisePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _arguments = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Exercicios cadastrados'),
+        title:  Text(_arguments.toString()),
         actions: [
           IconButton(
-            onPressed: () => Modular.to.pushNamed(ExerciseManagementPage.route),
+            onPressed: () => Modular.to.pushNamed(
+              ExerciseManagementPage.route,
+              arguments: 'Cadastrar Novo Exercício',
+            ),
             icon: const Icon(Icons.add),
           )
         ],

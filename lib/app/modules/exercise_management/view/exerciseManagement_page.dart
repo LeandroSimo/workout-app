@@ -15,9 +15,10 @@ class ExerciseManagementPageState extends State<ExerciseManagementPage> {
   final ExerciseManagementStore _store = ExerciseManagementStore();
   @override
   Widget build(BuildContext context) {
+    final _arguments = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastrar novo exercício'),
+        title: Text(_arguments.toString()),
       ),
       extendBodyBehindAppBar: true,
       body: Stack(

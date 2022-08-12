@@ -23,7 +23,7 @@ class WorkoutPage extends StatelessWidget {
           IconButton(
             onPressed: () => Modular.to.pushNamed(
               WorkoutManagementPage.route,
-              arguments: {'title': 'Novo Treino'},
+              arguments: managementStore.arguments,
             ),
             icon: const Icon(Icons.add),
           )
