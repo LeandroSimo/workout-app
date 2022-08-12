@@ -19,12 +19,24 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
   final _workoutManagement = Modular.get<WorkoutManagementStore>();
   final _workoutStore = Modular.get<WorkoutStore>();
 
+  ReactionDisposer? disposerCreate;
   ReactionDisposer? disposerInit;
   ReactionDisposer? disposerDelete;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    disposerCreate = reaction(
+      (_) => _workoutManagement.onCreate,
+      (onCreate) {
+        if (onCreate == true) {
+          print(_workoutStore.workouts);
+          // Modular.to.pop();
+        }
+      },
+    );
+
     disposerInit = reaction((_) => _workoutManagement.isInit, (isInit) {
       if (isInit == true) {
         final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
@@ -45,6 +57,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
 
   @override
   void dispose() {
+    disposerCreate!();
     disposerInit!();
     disposerDelete!();
     super.dispose();
@@ -56,7 +69,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_arguments['title']),
-        actions: _workoutManagement.workout.id.toString() != null
+        actions: _arguments['id'] != null
             ? [
                 IconButton(
                   onPressed: () =>

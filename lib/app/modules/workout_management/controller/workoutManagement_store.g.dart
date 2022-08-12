@@ -127,6 +127,22 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
     });
   }
 
+  late final _$onCreateAtom =
+      Atom(name: '_WorkoutManagementStoreBase.onCreate', context: context);
+
+  @override
+  bool get onCreate {
+    _$onCreateAtom.reportRead();
+    return super.onCreate;
+  }
+
+  @override
+  set onCreate(bool value) {
+    _$onCreateAtom.reportWrite(value, super.onCreate, () {
+      super.onCreate = value;
+    });
+  }
+
   late final _$onDeleteAtom =
       Atom(name: '_WorkoutManagementStoreBase.onDelete', context: context);
 
@@ -245,6 +261,7 @@ dropDownFocus: ${dropDownFocus},
 dropValid: ${dropValid},
 dropValue: ${dropValue},
 isInit: ${isInit},
+onCreate: ${onCreate},
 onDelete: ${onDelete},
 formKey: ${formKey},
 getName: ${getName},

@@ -17,28 +17,20 @@ mixin _$WorkoutStore on _WorkoutStoreBase, Store {
               name: '_WorkoutStoreBase.getWork'))
           .value;
 
-  late final _$workoutsAtom =
-      Atom(name: '_WorkoutStoreBase.workouts', context: context);
-
-  @override
-  List<Workout> get workouts {
-    _$workoutsAtom.reportRead();
-    return super.workouts;
-  }
-
-  @override
-  set workouts(List<Workout> value) {
-    _$workoutsAtom.reportWrite(value, super.workouts, () {
-      super.workouts = value;
-    });
-  }
-
   late final _$addWorkoutAsyncAction =
       AsyncAction('_WorkoutStoreBase.addWorkout', context: context);
 
   @override
   Future<void> addWorkout(Workout workout) {
     return _$addWorkoutAsyncAction.run(() => super.addWorkout(workout));
+  }
+
+  late final _$getWorkoutAsyncAction =
+      AsyncAction('_WorkoutStoreBase.getWorkout', context: context);
+
+  @override
+  Future<List<Workout>> getWorkout() {
+    return _$getWorkoutAsyncAction.run(() => super.getWorkout());
   }
 
   late final _$updateAsyncAction =
@@ -51,17 +43,6 @@ mixin _$WorkoutStore on _WorkoutStoreBase, Store {
 
   late final _$_WorkoutStoreBaseActionController =
       ActionController(name: '_WorkoutStoreBase', context: context);
-
-  @override
-  Future<List<Workout>> getWorkout() {
-    final _$actionInfo = _$_WorkoutStoreBaseActionController.startAction(
-        name: '_WorkoutStoreBase.getWorkout');
-    try {
-      return super.getWorkout();
-    } finally {
-      _$_WorkoutStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   Workout getById(String id) {
@@ -77,7 +58,6 @@ mixin _$WorkoutStore on _WorkoutStoreBase, Store {
   @override
   String toString() {
     return '''
-workouts: ${workouts},
 getWork: ${getWork}
     ''';
   }

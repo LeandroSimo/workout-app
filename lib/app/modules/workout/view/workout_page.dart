@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
 import 'package:my_workout/app/modules/workout/model/workout.dart';
@@ -53,17 +54,19 @@ class WorkoutPage extends StatelessWidget {
                 case ConnectionState.active:
                 case ConnectionState.done:
                   if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: _workoutStore.workouts.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var _work = _workoutStore.workouts[index];
-                        return WorkoutCard(
-                          _work.id.toString(),
-                          _work.imageUrl.toString(),
-                          _work.name.toString(),
-                          _work.weekDay!.round(),
-                        );
-                      },
+                    return Observer(
+                      builder: (_) => ListView.builder(
+                        itemCount: _workoutStore.workouts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var _work = _workoutStore.workouts[index];
+                          return WorkoutCard(
+                            _work.id.toString(),
+                            _work.imageUrl.toString(),
+                            _work.name.toString(),
+                            _work.weekDay!.round(),
+                          );
+                        },
+                      ),
                     );
                   } else {
                     return const Center(

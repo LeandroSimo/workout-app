@@ -26,6 +26,8 @@ abstract class _WorkoutManagementStoreBase with Store {
   @observable
   bool isInit = true;
   @observable
+  bool onCreate = true;
+  @observable
   bool onDelete = true;
 
   @observable
@@ -92,6 +94,7 @@ abstract class _WorkoutManagementStoreBase with Store {
 
   @action
   Future<void> save() async {
+    onCreate = false;
     dropValue != null && dropValue! > 0
         ? setDropValid(true)
         : setDropValid(false);
@@ -106,6 +109,7 @@ abstract class _WorkoutManagementStoreBase with Store {
       } else {
         await _workoutStore.addWorkout(workout);
       }
+      onCreate = true;
     }
   }
 }
