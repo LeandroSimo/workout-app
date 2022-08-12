@@ -9,6 +9,7 @@ import 'package:my_workout/app/utils/app_drawer.dart';
 
 class WorkoutPage extends StatelessWidget {
   static const String route = '/workout';
+  final store = Modular.get();
   final WorkoutStore _workoutStore = WorkoutStore();
   final WorkoutManagementStore managementStore = WorkoutManagementStore();
   @override
