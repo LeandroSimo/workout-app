@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_workout/app/modules/home/controller/home_store.dart';
+import 'package:my_workout/app/modules/home/view_models/button_bar_base.dart';
 import 'package:my_workout/app/modules/home/view_models/today_workout.dart';
 import 'package:my_workout/app/utils/app_drawer.dart';
 
@@ -40,9 +40,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
               children: [
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: ButtonBar(
-                    children: _homeStore.getButtonBar(() {}),
-                  ),
+                  child: ButtonBarBase(),
                 ),
                 TodayWorkout(),
               ],
