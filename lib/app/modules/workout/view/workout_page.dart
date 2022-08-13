@@ -10,9 +10,8 @@ import 'package:my_workout/app/utils/app_drawer.dart';
 
 class WorkoutPage extends StatelessWidget {
   static const String route = '/workout';
-  final store = Modular.get();
-  final WorkoutStore _workoutStore = WorkoutStore();
-  final WorkoutManagementStore managementStore = WorkoutManagementStore();
+  final _workoutStore = Modular.get<WorkoutStore>();
+  final _managementStore = WorkoutManagementStore();
   @override
   Widget build(BuildContext context) {
     final value = ModalRoute.of(context)?.settings.arguments;
@@ -23,7 +22,7 @@ class WorkoutPage extends StatelessWidget {
           IconButton(
             onPressed: () => Modular.to.pushNamed(
               WorkoutManagementPage.route,
-              arguments: managementStore.arguments,
+              arguments: _managementStore.arguments,
             ),
             icon: const Icon(Icons.add),
           )

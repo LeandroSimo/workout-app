@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_workout/app/modules/home/controller/home_store.dart';
 import 'package:my_workout/app/modules/home/view_models/button_bar_base.dart';
 import 'package:my_workout/app/modules/home/view_models/today_workout.dart';
+import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
 import 'package:my_workout/app/utils/app_drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
-  final HomeStore _homeStore = HomeStore();
+  final _workoutStore = WorkoutStore();
+  final _homeStore = HomeStore();
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +37,55 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 75),
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: ButtonBarBase(),
-                ),
-                TodayWorkout(),
-              ],
+            padding: const EdgeInsets.only(top: 60.0),
+            child: FutureBuilder(
+              future: _workoutStore.getWorkout(),
+              builder: (BuildContext context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  case ConnectionState.active:
+                  case ConnectionState.done:
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _workoutStore.workouts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final _works = _workoutStore.workouts[index];
+                          final _today = _workoutStore.workouts.indexWhere(
+                              (element) => element.weekDay == _works.weekDay);
+                          if (_today != -1) {
+                            return TodayWorkout(
+                              _works.name.toString(),
+                              _works.imageUrl.toString(),
+                            );
+                          } else {
+                            return const Center(
+                              child: Text(
+                                  'Nenhum treinamento encontrado para o dia selecionado.'),
+                            );
+                          }
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: Text('Erro de conexão'),
+                      );
+                    }
+                  default:
+                    return SizedBox();
+                }
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 80),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: ButtonBarBase(),
             ),
           ),
         ],

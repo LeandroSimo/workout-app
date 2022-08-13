@@ -9,10 +9,26 @@ part of 'home_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$HomeStore on HomeStoreBase, Store {
+  late final _$weekDayAtom =
+      Atom(name: 'HomeStoreBase.weekDay', context: context);
+
+  @override
+  int get weekDay {
+    _$weekDayAtom.reportRead();
+    return super.weekDay;
+  }
+
+  @override
+  set weekDay(int value) {
+    _$weekDayAtom.reportWrite(value, super.weekDay, () {
+      super.weekDay = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
-
+weekDay: ${weekDay}
     ''';
   }
 }

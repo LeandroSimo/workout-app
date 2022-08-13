@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class TodayWorkout extends StatelessWidget {
+  final String name;
+  final String imageUrl;
+
+  TodayWorkout(this.name, this.imageUrl);
+
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
@@ -38,7 +43,7 @@ class TodayWorkout extends StatelessWidget {
                         padding: const EdgeInsets.only(
                             left: 30, right: 30, bottom: 30),
                         child: Text(
-                          'Treino',
+                          name,
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ),
@@ -48,10 +53,10 @@ class TodayWorkout extends StatelessWidget {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
                 bottomLeft: Radius.circular(20),
@@ -59,7 +64,7 @@ class TodayWorkout extends StatelessWidget {
               ),
               child: Image(
                 image: NetworkImage(
-                  'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Zml0bmVzc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+                  imageUrl,
                 ),
                 width: 130,
                 height: 200,

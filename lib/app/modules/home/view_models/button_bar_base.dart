@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_workout/app/modules/home/controller/home_store.dart';
 import 'package:my_workout/app/utils/dias_semana.dart';
 
 class ButtonBarBase extends StatefulWidget {
@@ -7,7 +9,7 @@ class ButtonBarBase extends StatefulWidget {
 }
 
 class _ButtonBarBaseState extends State<ButtonBarBase> {
-  int weekDay = DateTime.now().weekday;
+  final _homeStore = Modular.get<HomeStore>();
 
   List<OutlinedButton> getButtonBar() {
     List<OutlinedButton> _list = [];
@@ -21,7 +23,7 @@ class _ButtonBarBaseState extends State<ButtonBarBase> {
           style: BorderStyle.solid,
           color: Color.fromARGB(255, 243, 219, 4),
         ),
-        backgroundColor: weekDay == i
+        backgroundColor: _homeStore.weekDay == i
             ? Color.fromARGB(255, 243, 219, 4)
             : Colors.transparent,
       );
@@ -29,13 +31,13 @@ class _ButtonBarBaseState extends State<ButtonBarBase> {
         OutlinedButton(
           onPressed: () {
             setState(() {
-              weekDay = i;
+              _homeStore.weekDay = i;
             });
           },
           child: Text(
             dia.substring(0, 3).toUpperCase(),
             style: TextStyle(
-              color: weekDay == i
+              color: _homeStore.weekDay == i
                   ? Colors.black
                   : Color.fromARGB(255, 243, 219, 4),
             ),
