@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:my_workout/app/modules/exercise/controller/exercise_store.dart';
+import 'package:my_workout/app/modules/exercise/model/exercise.dart';
 import 'package:my_workout/app/modules/exercise/view_models/exercise_card.dart';
 import 'package:my_workout/app/modules/exercise_management/view/exerciseManagement_page.dart';
 
@@ -37,11 +38,20 @@ class ExercisePage extends StatelessWidget {
               ),
             ),
           ),
-          FutureBuilder(
+          FutureBuilder<List<Exercise>>(
             future: _exerciseStore.getExercise(_arguments['workoutId']),
-            builder: (_, snapshot) {
-              return snapshot.connectionState == ConnectionState.done
-                  ? ListView.builder(
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Exercise>> snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case ConnectionState.active:
+                case ConnectionState.done:
+                  if (snapshot.hasData) {
+                    return ListView.builder(
                       itemCount: _exerciseStore.exercises.length,
                       itemBuilder: (_, index) {
                         var _exercise = _exerciseStore.exercises[index];
@@ -52,8 +62,15 @@ class ExercisePage extends StatelessWidget {
                           _exercise.imageUrl.toString(),
                         );
                       },
-                    )
-                  : const CircularProgressIndicator();
+                    );
+                  } else {
+                    return const Center(
+                      child: Text('Error de Conexão'),
+                    );
+                  }
+                default:
+                  return SizedBox();
+              }
             },
           ),
         ],
