@@ -29,8 +29,8 @@ mixin _$ExerciseStore on _ExerciseStoreBase, Store {
       AsyncAction('_ExerciseStoreBase.delete', context: context);
 
   @override
-  Future<void> delete(BuildContext context, String id) {
-    return _$deleteAsyncAction.run(() => super.delete(context, id));
+  Future<void> delete(String id) {
+    return _$deleteAsyncAction.run(() => super.delete(id));
   }
 
   @override

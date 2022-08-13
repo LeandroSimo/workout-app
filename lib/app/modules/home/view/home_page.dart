@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_workout/app/modules/exercise/view_models/exercise_list.dart';
 import 'package:my_workout/app/modules/home/controller/home_store.dart';
 import 'package:my_workout/app/modules/home/view_models/button_bar_base.dart';
 import 'package:my_workout/app/modules/home/view_models/today_workout.dart';
@@ -17,7 +18,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
   final _workoutStore = WorkoutStore();
-  final _homeStore = HomeStore();
 
   @override
   Widget build(BuildContext context) {
@@ -50,25 +50,38 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                   case ConnectionState.active:
                   case ConnectionState.done:
                     if (snapshot.hasData) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _workoutStore.workouts.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final _works = _workoutStore.workouts[index];
-                          final _today = _workoutStore.workouts.indexWhere(
-                              (element) => element.weekDay == _works.weekDay);
-                          if (_today != -1) {
-                            return TodayWorkout(
-                              _works.name.toString(),
-                              _works.imageUrl.toString(),
-                            );
-                          } else {
-                            return const Center(
-                              child: Text(
-                                  'Nenhum treinamento encontrado para o dia selecionado.'),
-                            );
-                          }
-                        },
+                      return Column(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _workoutStore.workouts.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final _works = _workoutStore.workouts[index];
+                                final _today = _workoutStore.workouts
+                                    .indexWhere((element) =>
+                                        element.weekDay == _works.weekDay);
+                                if (_today != -1) {
+                                  return TodayWorkout(
+                                    _works.name.toString(),
+                                    _works.imageUrl.toString(),
+                                  );
+                                } else {
+                                  return const Center(
+                                    child: Text(
+                                      'Nenhum treinamento encontrado para o dia selecionado.',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: ExerciseList(snapshot.hashCode.toString()),
+                          )
+                        ],
                       );
                     } else {
                       return const Center(

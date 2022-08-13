@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:my_workout/app/modules/exercise/model/exercise.dart';
@@ -23,12 +25,13 @@ abstract class _ExerciseStoreBase with Store, ChangeNotifier {
 
   @action
   Future<void> add(Exercise exercise) async {
+    exercise.id = Random().nextInt(100).toString();
     exercises.add(exercise);
     notifyListeners();
   }
 
   @action
-  Future<void> delete(BuildContext context, String id) async {
+  Future<void> delete(String id) async {
     exercises.removeWhere((element) => element.id == id);
     notifyListeners();
   }
