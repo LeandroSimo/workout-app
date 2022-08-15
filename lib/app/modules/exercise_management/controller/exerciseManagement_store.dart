@@ -51,8 +51,8 @@ abstract class _ExerciseManagementStoreBase with Store {
     }
   }
 
-  // @action
-  // Future<void> delete(BuildContext context, String id) async {
-  //   await _exerciseStore.delete(id);
-  // }
+  @action
+  Future<void> delete(BuildContext context, String id) async {
+    await _exerciseStore.delete(id);
+  }
 }

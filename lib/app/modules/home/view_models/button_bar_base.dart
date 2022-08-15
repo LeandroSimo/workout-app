@@ -9,7 +9,7 @@ class ButtonBarBase extends StatefulWidget {
 }
 
 class _ButtonBarBaseState extends State<ButtonBarBase> {
-  final _homeStore = Modular.get<HomeStore>();
+  final HomeStore _homeStore = Modular.get();
 
   List<OutlinedButton> getButtonBar() {
     List<OutlinedButton> _list = [];

@@ -1,16 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
 import 'package:my_workout/app/modules/workout/view/workout_page.dart';
 import 'package:my_workout/app/modules/workout_management/controller/workoutManagement_store.dart';
-import 'package:flutter/material.dart';
 
 class WorkoutManagementPage extends StatefulWidget {
   static const String route = '/workout-management';
-  WorkoutManagementPage({
-    Key? key,
-  }) : super(key: key);
+
   @override
   WorkoutManagementPageState createState() => WorkoutManagementPageState();
 }
@@ -27,19 +25,16 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    disposerCreate = reaction(
-      (_) => _workoutManagement.onCreate,
-      (onCreate) {
-        onCreate == true ? Modular.to.pop() : onCreate;
-      },
-    );
+    disposerCreate = reaction((_) => _workoutManagement.onCreate, (onCreate) {
+      final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
+      onCreate == true ? Modular.to.pop() : onCreate;
+    });
 
     disposerInit = reaction((_) => _workoutManagement.isInit, (isInit) {
       if (isInit == true) {
         final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
         if (_arguments['id'] != null) {
-          _workoutManagement.workout.id =
-              _workoutStore.getById(_arguments['id']).toString();
+          _workoutManagement.workout = _workoutStore.getById(_arguments['id']);
           _workoutManagement.dropValue = _workoutManagement.workout.weekDay;
         }
       }
@@ -96,8 +91,8 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                 child: ListView(
                   children: [
                     TextFormField(
-                      onChanged: _workoutManagement.setName,
                       initialValue: _workoutManagement.workout.name,
+                      onChanged: _workoutManagement.setName,
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) => FocusScope.of(context)
                           .requestFocus(_workoutManagement.imageFocus),
@@ -107,6 +102,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
                           : null,
                     ),
                     TextFormField(
+                      initialValue: _workoutManagement.workout.imageUrl,
                       onChanged: _workoutManagement.setImageUrl,
                       focusNode: _workoutManagement.imageFocus,
                       textInputAction: TextInputAction.next,

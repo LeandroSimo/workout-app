@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:my_workout/app/modules/exercise/controller/exercise_store.dart';
+import 'package:my_workout/app/modules/exercise_management/controller/exerciseManagement_store.dart';
 
 class ExerciseCard extends StatelessWidget {
   final String id;
@@ -8,13 +8,9 @@ class ExerciseCard extends StatelessWidget {
   final String description;
   final String imageUrl;
 
-  final _exerciseStore = Modular.get<ExerciseStore>();
+  final ExerciseManagementStore _exerciseMan = Modular.get();
 
   ExerciseCard(this.id, this.name, this.description, this.imageUrl);
-
-  void delete(BuildContext context) {
-    _exerciseStore.delete(id);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,7 @@ class ExerciseCard extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         trailing: IconButton(
-          onPressed: () => delete(context),
+          onPressed: () => _exerciseMan.delete(context, id),
           icon: const Icon(Icons.delete),
           color: Colors.red,
         ),

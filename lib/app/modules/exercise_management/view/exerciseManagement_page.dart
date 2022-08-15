@@ -93,10 +93,12 @@ class ExerciseManagementPageState extends State<ExerciseManagementPage> {
                       maxLength: 200,
                       minLines: 3,
                       maxLines: 5,
-                      buildCounter: (_,
-                              {required currentLength,
-                              required isFocused,
-                              maxLength}) =>
+                      buildCounter: (
+                        _, {
+                        required currentLength,
+                        required isFocused,
+                        maxLength,
+                      }) =>
                           Text(
                         '$currentLength/$maxLength',
                         style: const TextStyle(color: Colors.white),

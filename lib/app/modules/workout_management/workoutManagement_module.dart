@@ -10,9 +10,6 @@ class WorkoutManagementModule extends Module {
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(
-      '/',
-      child: (_, args) => WorkoutManagementPage(),
-    ),
+    ChildRoute('/', child: (_, args) => WorkoutManagementPage()),
   ];
 }

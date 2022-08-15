@@ -45,10 +45,6 @@ abstract class _WorkoutManagementStoreBase with Store {
     ],
   );
 
-  final arguments = ObservableMap<String, Object>.of(
-    {'title': 'Novo Treino'},
-  );
-
   @action
   void setDropValue(value) => dropValue = value;
   @action

@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_workout/app/modules/home/controller/home_store.dart';
 import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
 import 'package:my_workout/app/modules/workout/model/workout.dart';
 import 'package:my_workout/app/modules/workout/view_models/workout_card.dart';
-import 'package:my_workout/app/modules/workout_management/controller/workoutManagement_store.dart';
 import 'package:my_workout/app/modules/workout_management/view/workoutManagement_page.dart';
 import 'package:my_workout/app/utils/app_drawer.dart';
+import 'package:my_workout/app/utils/custom_future_builder.dart';
 
-class WorkoutPage extends StatelessWidget {
+class WorkoutPage extends StatefulWidget {
   static const String route = '/workout';
-  final _workoutStore = Modular.get<WorkoutStore>();
-  final _managementStore = WorkoutManagementStore();
+
+  @override
+  State<WorkoutPage> createState() => _WorkoutPageState();
+}
+
+class _WorkoutPageState extends State<WorkoutPage> {
+  final WorkoutStore _workoutStore = Modular.get();
+
   @override
   Widget build(BuildContext context) {
-    final value = ModalRoute.of(context)?.settings.arguments;
+    final _arguments = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Treinos'),
@@ -22,7 +29,7 @@ class WorkoutPage extends StatelessWidget {
           IconButton(
             onPressed: () => Modular.to.pushNamed(
               WorkoutManagementPage.route,
-              arguments: _managementStore.arguments,
+              arguments: {'title': 'Novo Treino'},
             ),
             icon: const Icon(Icons.add),
           )
@@ -40,42 +47,33 @@ class WorkoutPage extends StatelessWidget {
               ),
             ),
           ),
-          FutureBuilder<List<Workout>>(
+          CustomFutureBuilder<List<Workout>>(
             future: _workoutStore.getWorkout(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Workout>> snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return const Center(
-                    child: CircularProgressIndicator(),
+            onEmpty: (context) => const Center(
+              child: Text('Não há treinos cadastrados!'),
+            ),
+            onComplete: (context) => Observer(
+              builder: (_) => ListView.builder(
+                itemCount: _workoutStore.workouts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var _work = _workoutStore.workouts[index];
+                  return WorkoutCard(
+                    _work.id.toString(),
+                    _work.imageUrl.toString(),
+                    _work.name.toString(),
+                    _work.weekDay!.round(),
                   );
-                case ConnectionState.active:
-                case ConnectionState.done:
-                  if (snapshot.hasData) {
-                    return Observer(
-                      builder: (_) => ListView.builder(
-                        itemCount: _workoutStore.workouts.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          var _work = _workoutStore.workouts[index];
-                          return WorkoutCard(
-                            _work.id.toString(),
-                            _work.imageUrl.toString(),
-                            _work.name.toString(),
-                            _work.weekDay!.round(),
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return const Center(
-                      child: Text('Error de Conexão'),
-                    );
-                  }
-                default:
-                  return SizedBox();
-              }
-            },
+                },
+              ),
+            ),
+            onError: (context, error) => Center(
+              child: Text(
+                error.message,
+              ),
+            ),
+            onLoading: (context) => const Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
           ),
         ],
       ),
