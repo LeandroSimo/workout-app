@@ -79,7 +79,12 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                     ),
                   ),
                 ),
-                ExerciseList(_workout.id.toString())
+                Expanded(
+                  flex: 2,
+                  child: ExerciseList(
+                    _workout.id.toString(),
+                  ),
+                )
               ],
             ),
           ),

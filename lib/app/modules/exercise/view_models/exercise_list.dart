@@ -13,34 +13,31 @@ class ExerciseList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 4,
-      child: CustomFutureBuilder<List<Exercise>>(
-        future: _exerciseStore.getExercise(workoutId),
-        onEmpty: (context) => const Center(
-          child: Text('Não há exercícios cadastrados!'),
+    return CustomFutureBuilder<List<Exercise>>(
+      future: _exerciseStore.getExercise(workoutId),
+      onEmpty: (context) => const Center(
+        child: Text('Não há exercícios cadastrados!'),
+      ),
+      onLoading: (context) => const Center(
+        child: CircularProgressIndicator.adaptive(),
+      ),
+      onComplete: (context) => Observer(
+        builder: (_) => ListView.builder(
+          itemCount: _exerciseStore.exercises.length,
+          itemBuilder: (_, index) {
+            var _exercise = _exerciseStore.exercises[index];
+            return ExerciseCard(
+              _exercise.id.toString(),
+              _exercise.name.toString(),
+              _exercise.description.toString(),
+              _exercise.imageUrl.toString(),
+            );
+          },
         ),
-        onLoading: (context) => const Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
-        onComplete: (context) => Observer(
-          builder: (_) => ListView.builder(
-            itemCount: _exerciseStore.exercises.length,
-            itemBuilder: (_, index) {
-              var _exercise = _exerciseStore.exercises[index];
-              return ExerciseCard(
-                _exercise.id.toString(),
-                _exercise.name.toString(),
-                _exercise.description.toString(),
-                _exercise.imageUrl.toString(),
-              );
-            },
-          ),
-        ),
-        onError: (context, error) => Center(
-          child: Text(
-            error.message,
-          ),
+      ),
+      onError: (context, error) => Center(
+        child: Text(
+          error.message,
         ),
       ),
     );
