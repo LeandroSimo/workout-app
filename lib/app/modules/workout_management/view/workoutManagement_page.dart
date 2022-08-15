@@ -14,12 +14,14 @@ class WorkoutManagementPage extends StatefulWidget {
 }
 
 class WorkoutManagementPageState extends State<WorkoutManagementPage> {
-  final _workoutManagement = Modular.get<WorkoutManagementStore>();
-  final _workoutStore = Modular.get<WorkoutStore>();
+  final WorkoutManagementStore _workoutManagement = Modular.get();
+  // final WorkoutStore _workoutStore = Modular.get();
 
   ReactionDisposer? disposerCreate;
   ReactionDisposer? disposerInit;
   ReactionDisposer? disposerDelete;
+
+  bool isInit = true;
 
   @override
   void didChangeDependencies() {
@@ -27,14 +29,18 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
 
     disposerCreate = reaction((_) => _workoutManagement.onCreate, (onCreate) {
       final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
-      onCreate == true ? Modular.to.pop() : onCreate;
+      if (onCreate == true) {
+        Modular.to.pop();
+      }
+      ;
     });
 
     disposerInit = reaction((_) => _workoutManagement.isInit, (isInit) {
       if (isInit == true) {
         final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
         if (_arguments['id'] != null) {
-          _workoutManagement.workout = _workoutStore.getById(_arguments['id']);
+          _workoutManagement.workout =
+              Modular.get<WorkoutStore>().getById(_arguments['id']);
           _workoutManagement.dropValue = _workoutManagement.workout.weekDay;
         }
       }
@@ -43,7 +49,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
 
     disposerDelete = reaction((_) => _workoutManagement.onDelete, (onDelete) {
       onDelete == true
-          ? Modular.to.popAndPushNamed(WorkoutPage.route)
+          ? Modular.to.pushReplacementNamed(WorkoutPage.route)
           : onDelete;
     });
   }
@@ -53,6 +59,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
     disposerCreate!();
     disposerInit!();
     disposerDelete!();
+    Modular.dispose();
     super.dispose();
   }
 

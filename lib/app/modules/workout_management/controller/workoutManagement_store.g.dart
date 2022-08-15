@@ -9,6 +9,12 @@ part of 'workoutManagement_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
+  Computed<String>? _$getIdComputed;
+
+  @override
+  String get getId => (_$getIdComputed ??= Computed<String>(() => super.getId,
+          name: '_WorkoutManagementStoreBase.getId'))
+      .value;
   Computed<String>? _$getNameComputed;
 
   @override
@@ -29,6 +35,13 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
   int get getWeekDay =>
       (_$getWeekDayComputed ??= Computed<int>(() => super.getWeekDay,
               name: '_WorkoutManagementStoreBase.getWeekDay'))
+          .value;
+  Computed<bool>? _$getIsInitComputed;
+
+  @override
+  bool get getIsInit =>
+      (_$getIsInitComputed ??= Computed<bool>(() => super.getIsInit,
+              name: '_WorkoutManagementStoreBase.getIsInit'))
           .value;
 
   late final _$workoutAtom =
@@ -242,6 +255,17 @@ mixin _$WorkoutManagementStore on _WorkoutManagementStoreBase, Store {
   }
 
   @override
+  void setIsInit(dynamic value) {
+    final _$actionInfo = _$_WorkoutManagementStoreBaseActionController
+        .startAction(name: '_WorkoutManagementStoreBase.setIsInit');
+    try {
+      return super.setIsInit(value);
+    } finally {
+      _$_WorkoutManagementStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void showConfirmationModal(BuildContext context) {
     final _$actionInfo = _$_WorkoutManagementStoreBaseActionController
         .startAction(name: '_WorkoutManagementStoreBase.showConfirmationModal');
@@ -264,9 +288,11 @@ isInit: ${isInit},
 onCreate: ${onCreate},
 onDelete: ${onDelete},
 formKey: ${formKey},
+getId: ${getId},
 getName: ${getName},
 getImgUrl: ${getImgUrl},
-getWeekDay: ${getWeekDay}
+getWeekDay: ${getWeekDay},
+getIsInit: ${getIsInit}
     ''';
   }
 }

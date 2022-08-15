@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:my_workout/app/modules/exercise/controller/exercise_store.dart';
+import 'package:my_workout/app/modules/exercise/model/exercise.dart';
 import 'package:my_workout/app/modules/exercise/view_models/exercise_list.dart';
 import 'package:my_workout/app/modules/home/controller/home_store.dart';
-import 'package:my_workout/app/modules/home/view_models/button_bar_base.dart';
 import 'package:my_workout/app/modules/home/view_models/today_workout.dart';
 import 'package:my_workout/app/modules/workout/controller/workout_store.dart';
 import 'package:my_workout/app/modules/workout/model/workout.dart';
 import 'package:my_workout/app/utils/app_drawer.dart';
 import 'package:my_workout/app/utils/custom_future_builder.dart';
+import 'package:my_workout/app/utils/dias_semana.dart';
 
 class HomePage extends StatefulWidget {
   static const String route = '/';
@@ -20,7 +22,76 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
   final WorkoutStore _workoutStore = Modular.get();
-  final Workout _workout = Workout();
+  // final Workout _workout = Workout();
+  final ExerciseStore _exerciseStore = Modular.get();
+
+  int _weekDay = DateTime.now().weekday;
+
+  List<OutlinedButton> _getButtonBar() {
+    List<OutlinedButton> _list = [];
+
+    for (int i = 1; i < 8; i++) {
+      final dia = DiasSemana.getWeekdayName(i).toString();
+
+      final ButtonStyle _outlinedButtonStyle = OutlinedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        side: const BorderSide(
+          style: BorderStyle.solid,
+          color: Color.fromARGB(255, 243, 219, 4),
+        ),
+        backgroundColor: _weekDay == i
+            ? Color.fromARGB(255, 243, 219, 4)
+            : Colors.transparent,
+      );
+      _list.add(
+        OutlinedButton(
+          onPressed: () {
+            setState(() {
+              _weekDay = i;
+            });
+          },
+          child: Text(
+            dia.substring(0, 3).toUpperCase(),
+            style: TextStyle(
+              color: _weekDay == i
+                  ? Colors.black
+                  : Color.fromARGB(255, 243, 219, 4),
+            ),
+          ),
+          style: _outlinedButtonStyle,
+        ),
+      );
+    }
+    return _list;
+  }
+
+  Widget _getTodayWorkout(List<Workout> workout) {
+    final index = _workoutStore.workouts
+        .indexWhere((element) => element.weekDay == _weekDay);
+    if (index != -1) {
+      final _workoutElement = _workoutStore.workouts[index];
+      return TodayWorkout(
+          _workoutElement.name.toString(), _workoutElement.imageUrl.toString());
+    } else {
+      return const Center(
+        child: Text('Nenhum treinamento encontrado para o dia selecionado!'),
+      );
+    }
+  }
+
+  Widget _getExerciseList(List<Exercise> workout) {
+    final index = _workoutStore.workouts
+        .indexWhere((element) => element.weekDay == _weekDay);
+    if (index != -1) {
+      final _workoutElement = _workoutStore.workouts[index];
+      return ExerciseList(_workoutElement.id.toString());
+    } else {
+      return const Center(
+        child: Text(''),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,22 +125,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                       shrinkWrap: true,
                       itemCount: _workoutStore.workouts.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final _works = _workoutStore.workouts[index];
-                        final _today = _workoutStore.workouts.indexWhere(
-                            (element) => element.weekDay == _works.weekDay);
-                        if (_today != -1) {
-                          return TodayWorkout(
-                            _works.name.toString(),
-                            _works.imageUrl.toString(),
-                          );
-                        } else {
-                          return const Center(
-                            child: Text(
-                              'Nenhum treinamento encontrado para o dia selecionado.',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }
+                        return _getTodayWorkout(_workoutStore.workouts);
                       },
                     ),
                     onError: (context, error) => Center(
@@ -80,10 +136,8 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                   ),
                 ),
                 Expanded(
-                  flex: 2,
-                  child: ExerciseList(
-                    _workout.id.toString(),
-                  ),
+                  flex: 3,
+                  child: _getExerciseList(_exerciseStore.exercises),
                 )
               ],
             ),
@@ -92,7 +146,9 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
             padding: const EdgeInsets.only(top: 80),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: ButtonBarBase(),
+              child: ButtonBar(
+                children: _getButtonBar(),
+              ),
             ),
           ),
         ],

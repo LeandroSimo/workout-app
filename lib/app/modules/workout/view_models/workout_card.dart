@@ -11,14 +11,18 @@ class WorkoutCard extends StatelessWidget {
   final String name;
   final int weekDay;
   WorkoutCard(this.id, this.imageUrl, this.name, this.weekDay);
+
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     return GestureDetector(
-      onTap: () {
-        Modular.to.pushNamed(WorkoutManagementPage.route,
-            arguments: {'title': 'Editar $name', 'id': id});
-      },
+      onTap: () => Modular.to.pushNamed(
+        WorkoutManagementPage.route,
+        arguments: {
+          'title': 'Editar $name',
+          'id': id,
+        },
+      ),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),

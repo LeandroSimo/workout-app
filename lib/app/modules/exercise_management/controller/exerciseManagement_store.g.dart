@@ -119,6 +119,14 @@ mixin _$ExerciseManagementStore on _ExerciseManagementStoreBase, Store {
     return _$saveAsyncAction.run(() => super.save());
   }
 
+  late final _$deleteAsyncAction =
+      AsyncAction('_ExerciseManagementStoreBase.delete', context: context);
+
+  @override
+  Future<void> delete(BuildContext context, String id) {
+    return _$deleteAsyncAction.run(() => super.delete(context, id));
+  }
+
   late final _$_ExerciseManagementStoreBaseActionController =
       ActionController(name: '_ExerciseManagementStoreBase', context: context);
 

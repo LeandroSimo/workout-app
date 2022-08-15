@@ -10,10 +10,10 @@ class WorkoutManagementStore = _WorkoutManagementStoreBase
     with _$WorkoutManagementStore;
 
 abstract class _WorkoutManagementStoreBase with Store {
-  final _workoutStore = Modular.get<WorkoutStore>();
+  final WorkoutStore _workoutStore = Modular.get();
 
   @observable
-  var workout = Workout();
+  Workout workout = Workout();
   @observable
   var imageFocus = FocusNode();
   @observable
@@ -55,13 +55,19 @@ abstract class _WorkoutManagementStoreBase with Store {
   void setImageUrl(String value) => workout.imageUrl = value;
   @action
   void setWeekDay(int value) => workout.weekDay = value;
+  @action
+  void setIsInit(value) => isInit = value;
 
+  @computed
+  String get getId => workout.id.toString();
   @computed
   String get getName => workout.name.toString();
   @computed
   String get getImgUrl => workout.name.toString();
   @computed
   int get getWeekDay => workout.weekDay!.round();
+  @computed
+  bool get getIsInit => isInit;
 
   @action
   void showConfirmationModal(BuildContext context) {

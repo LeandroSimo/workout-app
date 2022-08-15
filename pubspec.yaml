@@ -39,7 +39,7 @@ dependencies:
   mobx: ^2.0.7+5
   flutter_mobx: ^2.0.6+1
   dio: ^4.0.6
-  provider: ^6.0.3
+  # provider: ^6.0.3
   # builders: ^2.0.0
 
 dev_dependencies:
@@ -102,5 +102,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  # 
+  # flutter pub get &
 scripts:
-  mobx: flutter pub get & flutter pub run build_runner watch --delete-conflicting-outputs
+  mobx: flutter pub run build_runner watch --delete-conflicting-outputs

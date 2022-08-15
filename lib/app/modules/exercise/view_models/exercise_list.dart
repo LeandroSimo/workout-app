@@ -8,8 +8,10 @@ import 'package:my_workout/app/utils/custom_future_builder.dart';
 
 class ExerciseList extends StatelessWidget {
   final String workoutId;
-  final ExerciseStore _exerciseStore = Modular.get();
+
   ExerciseList(this.workoutId);
+
+  final ExerciseStore _exerciseStore = Modular.get();
 
   @override
   Widget build(BuildContext context) {

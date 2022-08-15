@@ -21,11 +21,12 @@ abstract class _WorkoutStoreBase with Store, ChangeNotifier {
 
   @action
   Future<List<Workout>> getWorkout() async {
-    return Future.delayed(const Duration(seconds: 1), () => workouts);
+    return await Future.delayed(const Duration(seconds: 1), () => workouts);
   }
 
   @action
   Workout getById(String id) {
+    print('getById');
     return workouts.firstWhere((element) => element.id == id);
   }
 
