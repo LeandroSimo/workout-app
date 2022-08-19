@@ -31,6 +31,7 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
       final _arguments = ModalRoute.of(context)?.settings.arguments as Map;
       if (onCreate == true) {
         Modular.to.pop();
+        Modular.dispose<WorkoutManagementStore>();
       }
       ;
     });
@@ -59,7 +60,6 @@ class WorkoutManagementPageState extends State<WorkoutManagementPage> {
     disposerCreate!();
     disposerInit!();
     disposerDelete!();
-    Modular.dispose();
     super.dispose();
   }
 

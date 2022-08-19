@@ -121,12 +121,13 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                     onLoading: (context) => const Center(
                       child: CircularProgressIndicator.adaptive(),
                     ),
-                    onComplete: (context) => ListView.builder(
+                    onComplete: (context) => ListView(
+                      children: [_getTodayWorkout(_workoutStore.workouts)],
                       shrinkWrap: true,
-                      itemCount: _workoutStore.workouts.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return _getTodayWorkout(_workoutStore.workouts);
-                      },
+                      // itemCount: _workoutStore.workouts.length,
+                      // itemBuilder: (BuildContext context, int index) {
+                      //   return _getTodayWorkout(_workoutStore.workouts);
+                      // },
                     ),
                     onError: (context, error) => Center(
                       child: Text(
